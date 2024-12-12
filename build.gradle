@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'  // Ensure this is present to use the 'application' plugin
+}
+
+group 'com.myapp'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.postgresql:postgresql:42.6.0'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'org.slf4j:slf4j-api:2.0.0'
+    implementation 'ch.qos.logback:logback-classic:1.4.0'
+
+}
+application {
+    // Set the main class that Gradle should run
+    mainClassName = 'com.myapp.controller.BackendServer'  // Path to your BackendServer class
+}
+test {
+    useJUnitPlatform()
+}
