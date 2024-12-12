@@ -5,16 +5,9 @@ import java.util.HashSet;
 public class User {
     private int id;
     private String name;
-    private  HashSet<String> followers;
-    private  HashSet<String> following;
 
-    public User(int id, String name, HashSet<String> followers ,  HashSet<String> following) {
-        this.id = id;
-        this.name = name;
-        this.followers = new HashSet<>();
-        this.following = new HashSet<>();
 
-    }
+
     public User(int id, String name) {
         this.id = id;
         this.name = name;

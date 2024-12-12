@@ -11,6 +11,12 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.Map;
+
 
 public class UsersHandler extends BaseHandler {
 
@@ -48,16 +54,23 @@ public class UsersHandler extends BaseHandler {
     @Override
     protected void handlePost(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
-
+        System.out.println(path);
         if("/api/users".equals(path)){
             String requestBody = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))
                     .lines()
                     .collect(Collectors.joining("\n"));
 
             // Parse fields from JSON body
-            String idString = requestBody.split("\"id\":")[1].split(",")[0].trim();
-            String name = requestBody.split("\"name\":")[1].split("}")[0].trim().replace("\"", "");
-            int id = Integer.parseInt(idString);
+
+            Gson gson = new Gson();
+            Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+            Map<String, Object> jsonMap = gson.fromJson(requestBody, mapType);
+
+            // Access fields dynamically
+            int id = ((Double) jsonMap.get("id")).intValue(); // Gson parses numbers as Double
+            String name = (String) jsonMap.get("name");
+            System.out.println(id);
+            System.out.println(name);
 
             userService.createUser(id, name);
 
