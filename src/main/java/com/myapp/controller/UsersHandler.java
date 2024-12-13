@@ -23,12 +23,7 @@ public class UsersHandler extends BaseHandler {
     protected void handleGet(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         System.out.println(path.matches("/api/users/\\d+/feed"));
-        if (path.matches("/api/users/\\d+/feed")) { // Handle /api/users/{userid}/feed
-            int userId = extractUserId(path);
-            System.out.println(userId);
-            String response = getUserFeed(userId);
-            setResponse(exchange,response);
-        } else if (path.matches("/api/users/\\d+")) { // Handle /api/users/{userid}
+        if (path.matches("/api/users/\\d+")) { // Handle /api/users/{userid}
             int userId = extractUserId(path);
             String response = getUserById(userId);
             setResponse(exchange,response);
@@ -61,12 +56,12 @@ public class UsersHandler extends BaseHandler {
             Map<String, Object> jsonMap = gson.fromJson(requestBody, mapType);
 
             // Access fields dynamically
-            int id = ((Double) jsonMap.get("id")).intValue(); // Gson parses numbers as Double
+//            int id = ((Double) jsonMap.get("id")).intValue(); // Gson parses numbers as Double
             String name = (String) jsonMap.get("name");
-            System.out.println(id);
+
             System.out.println(name);
             /* CHECK IF THE USER ALREADY CREATED  **/
-            userService.createUser(id, name);
+            userService.createUser(1,name);
 
             sendJsonResponse(exchange, 201, "{\"status\":\"User created\"}");
         }

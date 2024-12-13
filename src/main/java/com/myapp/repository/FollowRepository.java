@@ -38,7 +38,7 @@ public class FollowRepository {
         }
     }
     // instead of returning the string return the follower users, with the id
-    public List<User>  getFollowing(int userId) {
+    public List<User> getFollowing(int userId) {
         String query = "SELECT u.name,u.id FROM users u JOIN followersDetails f ON u.id = f.followee_id WHERE f.follower_id = ?" ;
         List<User> followedUsers = new ArrayList<>();
         try (Connection connection = DBConnection.getConnection();
@@ -46,7 +46,7 @@ public class FollowRepository {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                followedUsers.add( new User( rs.getInt("id"),   rs.getString("name"));
+                followedUsers.add( new User( rs.getInt("id"),   rs.getString("name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class FollowRepository {
             stmt.setInt(1, followeeId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                followedUsers.add( new User( rs.getInt("id"), rs.getString("name"));
+                followedUsers.add( new User( rs.getInt("id"), rs.getString("name")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

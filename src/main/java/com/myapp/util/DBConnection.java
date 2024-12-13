@@ -12,7 +12,7 @@ public class DBConnection {
 
     static {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/xApplication");
+        config.setJdbcUrl("jdbc:postgresql://localhost:5432/xapplication");
         config.setUsername("postgres");
         config.setPassword("Kaviya@123");
 

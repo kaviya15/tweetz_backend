@@ -1,11 +1,11 @@
 package com.myapp.model;
 
-public class Message {
+public class Feed {
     private int id;
     private String content;
     private int userId;
 
-    public Message(int id, String content, int userId) {
+    public Feed(int id, String content, int userId) {
         this.id = id;
         this.content = content;
         this.userId = userId;

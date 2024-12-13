@@ -30,24 +30,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public List<User> getUserFollowers(int userId) {
-        return null;
-    }
 
-    @Override
-    public List<User> getUserFollowing(int userId) {
-        return null;
-    }
-
-    @Override
-    public void followUser(int user_id, int follower_id) {
-
-    }
-
-    @Override
-    public void unfollowUser(int user_id, int follower_id) {
-
-    }
 }
 
