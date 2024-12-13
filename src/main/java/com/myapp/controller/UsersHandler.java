@@ -1,10 +1,9 @@
 package com.myapp.controller;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.model.User;
 import com.myapp.service.UserService;
 import com.myapp.service.impl.UserServiceImpl;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,11 +16,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-
 public class UsersHandler extends BaseHandler {
 
     private static final UserService userService = new UserServiceImpl();
-
     @Override
     protected void handleGet(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
@@ -31,21 +28,18 @@ public class UsersHandler extends BaseHandler {
             System.out.println(userId);
             String response = getUserFeed(userId);
             setResponse(exchange,response);
-        } else if (path.matches("/api/users/\\d+/followers")) { // Handle /api/users/{userid}/followers
-            int userId = extractUserId(path);
-            String response = getUserFollowers(userId);
-            setResponse(exchange,response);
-        } else if (path.matches("/api/users/\\d+/following")) { // Handle /api/users/{userid}/following
-            int userId = extractUserId(path);
-            String response = getUserFollowing(userId);
-            setResponse(exchange,response);
         } else if (path.matches("/api/users/\\d+")) { // Handle /api/users/{userid}
             int userId = extractUserId(path);
             String response = getUserById(userId);
             setResponse(exchange,response);
         } else if ("/api/users".equals(path)) { // Handle /api/users (all users)
-            String response = getAllUsers();
-            setResponse(exchange,response);
+            List<User> response = getAllUsers();
+//            User newis = new User(1, "Kaviya");
+//            System.out.println("asdasdasd" + newis);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonResponse = objectMapper.writeValueAsString(response);
+            System.out.println("jsonResponsewdw" + jsonResponse);
+            setResponse(exchange,jsonResponse);
         } else {
             sendErrorResponse(exchange, 404, "Endpoint not found");
         }
@@ -71,42 +65,20 @@ public class UsersHandler extends BaseHandler {
             String name = (String) jsonMap.get("name");
             System.out.println(id);
             System.out.println(name);
-
+            /* CHECK IF THE USER ALREADY CREATED  **/
             userService.createUser(id, name);
 
             sendJsonResponse(exchange, 201, "{\"status\":\"User created\"}");
         }
-        else if("/api/users/follow".equals(path)){
-            String requestBody = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))
-                    .lines()
-                    .collect(Collectors.joining("\n"));
 
-            // Parse fields from JSON body
-            String user_id_string = requestBody.split("\"user_id\":")[1].split(",")[0].trim();
-            String follower_id_string = requestBody.split("\"follower_id\":")[1].split(",")[0].trim();
-            int user_id = Integer.parseInt(user_id_string);
-            int follower_id = Integer.parseInt(follower_id_string);
-            userService.followUser(user_id, follower_id);
-        }
-        else if("/api/users/unfollow".equals(path)){
-            String requestBody = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))
-                    .lines()
-                    .collect(Collectors.joining("\n"));
 
-            // Parse fields from JSON body
-            String user_id_string = requestBody.split("\"user_id\":")[1].split(",")[0].trim();
-            String follower_id_string = requestBody.split("\"follower_id\":")[1].split(",")[0].trim();
-            int user_id = Integer.parseInt(user_id_string);
-            int follower_id = Integer.parseInt(follower_id_string);
-            userService.unfollowUser(user_id, follower_id);
-        }
 
     }
 
     // Get all users
-    private String getAllUsers() {
+    private List<User> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return users.toString(); // Use JSON serialization in real scenarios
+        return users; // Use JSON serialization in real scenarios
     }
 
     // Get user by ID
@@ -130,32 +102,12 @@ public class UsersHandler extends BaseHandler {
     }
 
     // Get user's followers
-    private String getUserFollowers(int userId) {
-        // Fetch user followers from the service layer
-        List<User> followers = userService.getUserFollowers(userId); // Add this method in UserService
-        System.out.println(followers);
-        if(followers!=null){
-            return followers.toString(); // Use JSON serialization
-        }
-        return  null;
 
-    }
 
-    // Get user's following
-    private String getUserFollowing(int userId) {
-        // Fetch user's following from the service layer
-        List<User> following = userService.getUserFollowing(userId); // Add this method in UserService
-        if(following!=null){
-            return following.toString(); // Use JSON serialization
-        }
-        return null;
 
-    }
 
     // Helper method to extract user ID from the path
-    private int extractUserId(String path) {
-        return Integer.parseInt(path.split("/")[3]);
-    }
+
 
     private void setResponse(HttpExchange exchange,String response) throws IOException {
         if (response != null) {

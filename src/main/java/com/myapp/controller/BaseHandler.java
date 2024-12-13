@@ -1,11 +1,15 @@
 package com.myapp.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public abstract class BaseHandler implements HttpHandler {
 
@@ -45,6 +49,18 @@ public abstract class BaseHandler implements HttpHandler {
     protected abstract void handleGet(HttpExchange exchange) throws IOException;
 
     protected abstract void handlePost(HttpExchange exchange) throws IOException;
+
+    protected Map<String, Object> parseInput(String requestBody){
+        Gson gson = new Gson();
+        Type mapType = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, Object> jsonMap = gson.fromJson(requestBody, mapType);
+        return jsonMap;
+    }
+
+    protected int extractUserId(String path) {
+        return Integer.parseInt(path.split("/")[3]);
+    }
+
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
