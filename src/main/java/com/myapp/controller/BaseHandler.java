@@ -44,7 +44,13 @@ public abstract class BaseHandler implements HttpHandler {
         String response = String.format("{\"error\":\"%s\"}", errorMessage);
         sendJsonResponse(exchange, statusCode, response);
     }
-
+    protected void setResponse(HttpExchange exchange,String response) throws IOException {
+        if (response != null) {
+            sendJsonResponse(exchange, 200, response);
+        } else {
+            sendErrorResponse(exchange, 404, response);
+        }
+    }
     // Abstract methods to enforce structure
     protected abstract void handleGet(HttpExchange exchange) throws IOException;
 

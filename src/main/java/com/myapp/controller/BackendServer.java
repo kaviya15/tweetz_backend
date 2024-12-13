@@ -11,6 +11,7 @@ public class BackendServer {
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/api/users", new UsersHandler());
+        server.createContext("/api/following", new FollowHandler());
         server.createContext("/api/posts", new PostHandler());
         server.setExecutor(null); // Default executor
         server.start();

@@ -12,20 +12,25 @@ import java.sql.Connection;
 
 public class FollowRepository {
 
-    public void FollowUser(Follower follower){
+    public String followUser(Follower follower){
         String query = "INSERT INTO followersDetails (follower_id, followee_id) values (?,?) ";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, follower.get_follower_id());
             stmt.setInt(2, follower.get_followee_id());
             stmt.executeUpdate();
+            System.out.println("successfully created!! ");
+            return "true";
         } catch (SQLException e) {
             e.printStackTrace();
+            return "false";
         }
 
 
+
+
     }
-    public void unfollowUser(Follower follower) {
+    public String  unfollowUser(Follower follower) {
         String query = "DELETE FROM followersDetails WHERE follower_id = ? AND followee_id = ?";
         try (Connection connection =DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -33,8 +38,10 @@ public class FollowRepository {
             stmt.setInt(2, follower.get_followee_id());
             stmt.executeUpdate();
             System.out.println("Successfully unfollowed the user.");
+            return "true";
         } catch (SQLException e) {
             e.printStackTrace();
+            return "false";
         }
     }
     // instead of returning the string return the follower users, with the id
@@ -55,7 +62,7 @@ public class FollowRepository {
     }
 
     public List<User> getFollowers(int followeeId) {
-        String query = "SELECT u.name,u.id FROM users u JOIN followersDetails f ON u.id = f.followee_id WHERE f.follower_id = ?" ;
+        String query = "SELECT u.name,u.id FROM users u JOIN followersDetails f ON u.id = f.follower_id WHERE f.followee_id = ?" ;
         List<User> followedUsers = new ArrayList<>();
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {

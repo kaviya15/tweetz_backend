@@ -10,13 +10,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository = new UserRepository();
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<User> getAllUsers(int userid) {
+        return userRepository.findAll(userid);
     }
 
     @Override
-    public void createUser(int id, String name) {
-        userRepository.save(new User(id, name));
+    public User createUser(int id, String name) {
+       return userRepository.save(new User(id, name));
     }
 
     @Override

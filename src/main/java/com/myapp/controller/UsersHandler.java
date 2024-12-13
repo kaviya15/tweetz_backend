@@ -11,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -22,15 +21,12 @@ public class UsersHandler extends BaseHandler {
     @Override
     protected void handleGet(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
-        System.out.println(path.matches("/api/users/\\d+/feed"));
-        if (path.matches("/api/users/\\d+")) { // Handle /api/users/{userid}
+
+        if (path.matches("/api/users/\\d+")) { // Handle /api/users (all users)
             int userId = extractUserId(path);
-            String response = getUserById(userId);
-            setResponse(exchange,response);
-        } else if ("/api/users".equals(path)) { // Handle /api/users (all users)
-            List<User> response = getAllUsers();
-//            User newis = new User(1, "Kaviya");
-//            System.out.println("asdasdasd" + newis);
+            System.out.println(userId);
+            List<User> response = getAllUsers(userId);
+
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonResponse = objectMapper.writeValueAsString(response);
             System.out.println("jsonResponsewdw" + jsonResponse);
@@ -61,9 +57,11 @@ public class UsersHandler extends BaseHandler {
 
             System.out.println(name);
             /* CHECK IF THE USER ALREADY CREATED  **/
-            userService.createUser(1,name);
-
-            sendJsonResponse(exchange, 201, "{\"status\":\"User created\"}");
+            User user = userService.createUser(1,name);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonResponse = objectMapper.writeValueAsString(user);
+            System.out.println("jsonResponsewdw" + jsonResponse);
+            setResponse(exchange,jsonResponse);
         }
 
 
@@ -71,8 +69,8 @@ public class UsersHandler extends BaseHandler {
     }
 
     // Get all users
-    private List<User> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    private List<User> getAllUsers(int userId) {
+        List<User> users = userService.getAllUsers(userId);
         return users; // Use JSON serialization in real scenarios
     }
 
@@ -104,7 +102,7 @@ public class UsersHandler extends BaseHandler {
     // Helper method to extract user ID from the path
 
 
-    private void setResponse(HttpExchange exchange,String response) throws IOException {
+    protected void setResponse(HttpExchange exchange,String response) throws IOException {
         if (response != null) {
             sendJsonResponse(exchange, 200, response);
         } else {
