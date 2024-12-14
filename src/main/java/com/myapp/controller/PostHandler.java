@@ -9,6 +9,7 @@ import com.myapp.service.impl.PostServiceImpl;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import netscape.javascript.JSObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,11 +33,13 @@ public class PostHandler extends   BaseHandler{
             List<Feed> feed = postUserService.getPost(userId);
             System.out.println("feed");
             System.out.println(feed);
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonResponse = objectMapper.writeValueAsString(feed);
-            System.out.println(jsonResponse);
 
-            setResponse(exchange,jsonResponse);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Object json = objectMapper.writeValueAsString(feed);
+//            String jsonResponse = objectMapper.writeValueAsString(feed);
+//            System.out.println(jsonResponse);
+
+            setResponse(exchange,json.toString());
 //            List<Feed> response = getFeeds(userId);
 //            setResponse(exchange,response);
         }

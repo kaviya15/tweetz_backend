@@ -12,11 +12,12 @@ public class UserRepository {
 
         System.out.println("find all call method invoked");
         List<User> users = new ArrayList<>();
-        String query = "SELECT * FROM users WHERE id NOT IN (SELECT followee_id FROM followersdetails WHERE follower_id = ?)";
+        String query = "SELECT * FROM users WHERE id NOT IN (SELECT followee_id FROM followersdetails WHERE follower_id = ?) and id != ?";
 
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1,userid);
+            stmt.setInt(2,userid);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 users.add(new User(rs.getInt("id"), rs.getString("name")));
@@ -59,6 +60,7 @@ public class UserRepository {
 
                 stmt.setString(1, user.getName());
                 stmt.executeUpdate();
+                user1 = getUserByName(user.getName());
             } catch (SQLException e) {
                 e.printStackTrace();
             }

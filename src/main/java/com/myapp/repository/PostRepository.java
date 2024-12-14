@@ -13,8 +13,6 @@ import java.sql.Connection;
 
 public class PostRepository {
 
-
-
     public static List<Feed> getPost(int userid){
         List<Feed>  feeds = new ArrayList<>();
         String query = """
