@@ -129,8 +129,9 @@ public class FollowHandler extends  BaseHandler {
 
             int follower_id = get_follower_id(parsedValues);
             int followee_id =get_followee_id(parsedValues);
-            String response =  followService.followUser(new Follower(1,follower_id,followee_id));
-            setResponse(exchange,response);
+            Follower response =  followService.followUser(new Follower(1,follower_id,followee_id));
+            System.out.println(response);
+            setResponse(exchange,response.toString());
 
         }
     }

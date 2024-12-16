@@ -5,6 +5,7 @@ import com.myapp.model.User;
 import com.myapp.repository.FollowRepository;
 import com.myapp.repository.UserRepository;
 import com.myapp.service.FollowService;
+import com.myapp.service.UserService;
 
 import java.util.List;
 
@@ -12,9 +13,13 @@ public class FollowerServiceImpl implements FollowService {
 
     private final FollowRepository followRepository = new FollowRepository();
     @Override
-    public String followUser(Follower follower) {
+    public Follower followUser(Follower follower) {
         System.out.println("follow user called");
-        return followRepository.followUser(follower);
+        Follower newfollower = followRepository.followUser(follower);
+        System.out.println(newfollower.get_followee_id());
+        UserService userService = UserContext.getUserService(newfollower.get_followee_id());
+        userService.addObserver(newfollower);
+        return newfollower;
 
     }
 
@@ -33,6 +38,11 @@ public class FollowerServiceImpl implements FollowService {
         return followRepository.getFollowing(user_id);
 
     }
+
+//    @Override
+//    public String update(String message) {
+//        return null;
+//    }
 
 
 }

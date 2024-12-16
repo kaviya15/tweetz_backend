@@ -12,7 +12,7 @@ import java.sql.Connection;
 
 public class FollowRepository {
 
-    public String followUser(Follower follower){
+    public Follower followUser(Follower follower){
         String query = "INSERT INTO followersDetails (follower_id, followee_id) values (?,?) ";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -20,10 +20,10 @@ public class FollowRepository {
             stmt.setInt(2, follower.get_followee_id());
             stmt.executeUpdate();
             System.out.println("successfully created!! ");
-            return "true";
+            return follower;
         } catch (SQLException e) {
             e.printStackTrace();
-            return "false";
+            return null;
         }
 
 
@@ -75,6 +75,13 @@ public class FollowRepository {
             e.printStackTrace();
         }
         return followedUsers;
+    }
+
+
+
+    public String update(String message) {
+        /* update to the database for each followers*/
+        return null;
     }
 
 

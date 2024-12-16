@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.Map;
-
+import com.myapp.service.impl.UserContext;
 public class UsersHandler extends BaseHandler {
 
     private static final UserService userService = new UserServiceImpl();
@@ -58,6 +58,8 @@ public class UsersHandler extends BaseHandler {
             System.out.println(name);
             /* CHECK IF THE USER ALREADY CREATED  **/
             User user = userService.createUser(1,name);
+            UserContext usercontext = new UserContext();
+            usercontext.addUserService(user.getId(),userService);
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonResponse = objectMapper.writeValueAsString(user);
             System.out.println("jsonResponsewdw" + jsonResponse);

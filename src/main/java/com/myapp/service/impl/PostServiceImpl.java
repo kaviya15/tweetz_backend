@@ -3,6 +3,7 @@ package com.myapp.service.impl;
 import com.myapp.model.Feed;
 import com.myapp.repository.PostRepository;
 import com.myapp.service.PostUserService;
+import com.myapp.service.UserService;
 
 import java.util.List;
 
@@ -14,7 +15,12 @@ public class PostServiceImpl implements PostUserService {
     @Override
     public Feed addPost(int id, int user_id, String content) {
         System.out.println("Post message is being called service");
-        return postRepository.addPost(new Feed(1,user_id,content));
+        Feed feed =  postRepository.addPost(new Feed(1,user_id,content));
+        UserService userService = UserContext.getUserService(user_id);
+        userService.notifyObservers(content);
+        /* call user repo  */
+       return feed;
+
     }
 
     @Override
