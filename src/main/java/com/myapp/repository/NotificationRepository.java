@@ -2,6 +2,7 @@ package com.myapp.repository;
 
 
 
+import com.myapp.model.Notifications;
 import com.myapp.util.DBConnection;
         import java.sql.Connection;
         import java.sql.PreparedStatement;
@@ -22,15 +23,16 @@ public class NotificationRepository  {
             e.printStackTrace();
         }
     }
-    public static List<String> getUnreadNotifications(int userId) {
+    public static List<Notifications> getUnreadNotifications(int userId, String name) {
+        System.out.println("notification" + name);
         String query = "SELECT message FROM notifications WHERE user_id = ? AND is_read = FALSE";
-        List<String> notifications = new ArrayList<>();
+        List<Notifications> notifications = new ArrayList<>();
         try (Connection connection =  DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                notifications.add(rs.getString("message"));
+                notifications.add(new Notifications(1,name,rs.getString("message")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

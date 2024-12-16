@@ -1,6 +1,6 @@
 package com.myapp.repository;
 
-import com.myapp.model.Follower;
+import com.myapp.model.Followers;
 
 import com.myapp.model.User;
 import com.myapp.util.DBConnection;
@@ -12,7 +12,7 @@ import java.sql.Connection;
 
 public class FollowRepository {
 
-    public Follower followUser(Follower follower){
+    public Followers followUser(Followers follower){
         String query = "INSERT INTO followersDetails (follower_id, followee_id) values (?,?) ";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -30,7 +30,7 @@ public class FollowRepository {
 
 
     }
-    public String  unfollowUser(Follower follower) {
+    public String  unfollowUser(Followers follower) {
         String query = "DELETE FROM followersDetails WHERE follower_id = ? AND followee_id = ?";
         try (Connection connection =DBConnection.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {

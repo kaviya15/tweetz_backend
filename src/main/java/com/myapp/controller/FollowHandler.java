@@ -1,20 +1,15 @@
 package com.myapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.myapp.model.Follower;
+import com.myapp.model.Followers;
 import com.myapp.model.User;
 import com.myapp.service.FollowService;
-import com.myapp.service.UserService;
 import com.myapp.service.impl.FollowerServiceImpl;
-import com.myapp.service.impl.UserServiceImpl;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +111,7 @@ public class FollowHandler extends  BaseHandler {
             int followee_id =get_followee_id(parsedValues);
 
 
-            String response =   followService.unfollowUser(new Follower(1,follower_id,followee_id));
+            String response =   followService.unfollowUser(new Followers(1,follower_id,followee_id));
             setResponse(exchange,response);
         }
 
@@ -129,7 +124,7 @@ public class FollowHandler extends  BaseHandler {
 
             int follower_id = get_follower_id(parsedValues);
             int followee_id =get_followee_id(parsedValues);
-            Follower response =  followService.followUser(new Follower(1,follower_id,followee_id));
+            Followers response =  followService.followUser(new Followers(1,follower_id,followee_id));
             System.out.println(response);
             setResponse(exchange,response.toString());
 

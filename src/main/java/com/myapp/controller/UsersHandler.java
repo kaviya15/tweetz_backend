@@ -85,16 +85,7 @@ public class UsersHandler extends BaseHandler {
         return null;
     }
 
-    // Get user's feed
-    private String getUserFeed(int userId) {
-        // Fetch user feed data from the service layer
-        List<String> feed = userService.getUserFeed(userId); // Add this method in UserService
-        if(feed !=null){
-            return feed.toString(); // Use JSON serialization
-        }
-        return null;
 
-    }
 
     // Get user's followers
 

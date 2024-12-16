@@ -1,9 +1,7 @@
 package com.myapp.repository;
 
 import com.myapp.model.Feed;
-import com.myapp.model.Follower;
 
-import com.myapp.model.User;
 import com.myapp.util.DBConnection;
 
 import java.sql.*;

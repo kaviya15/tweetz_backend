@@ -1,6 +1,6 @@
 package com.myapp.service.impl;
 
-import com.myapp.model.Follower;
+import com.myapp.model.Followers;
 import com.myapp.model.User;
 import com.myapp.repository.UserRepository;
 //import com.myapp.service.UserNotificationService;
@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService  {
-    private final FollowerObserverManager observerManager = new FollowerObserverManager();
+
 
     private final UserRepository userRepository = new UserRepository();
-    private List<Follower> followersList = new ArrayList<>();
+    private List<FollowerObserver> followersList = new ArrayList<>();
 //    private int userId;
 
 
@@ -32,50 +32,24 @@ public class UserServiceImpl implements UserService  {
         return null;
     }
 
-    @Override
-    public List<String> getUserFeed(int userId) {
-        System.out.println(userId);
-        return null;
-    }
 
+
+    @Override
+    public void addObserver(FollowerObserver newfollower) {
+        followersList.add(newfollower);
+    }
     @Override
     public void notifyObservers(String message) {
-        observerManager.update(message); // Notify all followers
+
+        for(FollowerObserver ls : followersList){
+                ls.update(message);
+        }
     }
-
-    public void addObserver(Follower follower) {
-        observerManager.addFollower(follower); // Add follower to observer manager
-    }
-
-    public void removeObserver(Follower follower) {
-        observerManager.removeFollower(follower); // Remove follower from observer manager
-    }
+}
 
 
-
-//    public  void addObserver(Follower follower){
-//        /** make db call to get the followers for loop  */
-//        /* get following */
-//        followersList.add(follower);
-//
-//
-//
-//    }
 //
 //    public  void removeObserver(Follower follower){
 //
 //    }
 //
-//    @Override
-//    public void notifyObservers(String message) {
-//        /* get the list of followers*/
-//        //for (Follower follower : followers) {
-////        follower.update(message); // Notify each follower
-////        }
-//
-//        for(int ls : followersList){
-//
-//        }
-//    }
-}
-

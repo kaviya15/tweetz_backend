@@ -1,9 +1,8 @@
 package com.myapp.service.impl;
 
-import com.myapp.model.Follower;
+import com.myapp.model.Followers;
 import com.myapp.model.User;
 import com.myapp.repository.FollowRepository;
-import com.myapp.repository.UserRepository;
 import com.myapp.service.FollowService;
 import com.myapp.service.UserService;
 
@@ -13,18 +12,20 @@ public class FollowerServiceImpl implements FollowService {
 
     private final FollowRepository followRepository = new FollowRepository();
     @Override
-    public Follower followUser(Follower follower) {
+    public Followers followUser(Followers follower) {
+
+        FollowerObserver fl = new FollowerObserver(follower);
         System.out.println("follow user called");
-        Follower newfollower = followRepository.followUser(follower);
-        System.out.println(newfollower.get_followee_id());
+        Followers newfollower = followRepository.followUser(follower);
         UserService userService = UserContext.getUserService(newfollower.get_followee_id());
-        userService.addObserver(newfollower);
+        userService.addObserver(fl);
+        System.out.println(newfollower.get_followee_id());
         return newfollower;
 
     }
 
     @Override
-    public String  unfollowUser(Follower follower) {
+    public String  unfollowUser(Followers follower) {
        return followRepository.unfollowUser(follower);
     }
 
