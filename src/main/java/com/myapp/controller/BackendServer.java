@@ -10,10 +10,14 @@ import java.nio.charset.StandardCharsets;
 public class BackendServer {
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-        server.createContext("/api/users", new UsersHandler());
-        server.createContext("/api/notifications", new NotificationHandler());
-        server.createContext("/api/following", new FollowHandler());
-        server.createContext("/api/posts", new PostHandler());
+        BaseHandler userhandler = new UsersHandler();
+        BaseHandler followhandler = new FollowHandler();
+        BaseHandler notificationhandler = new NotificationHandler();
+        BaseHandler posthandler = new PostHandler();
+        server.createContext("/api/users", userhandler);
+        server.createContext("/api/notifications", notificationhandler);
+        server.createContext("/api/following",followhandler);
+        server.createContext("/api/posts", posthandler);
         server.setExecutor(null); // Default executor
         server.start();
         System.out.println("Server started on port 8080");

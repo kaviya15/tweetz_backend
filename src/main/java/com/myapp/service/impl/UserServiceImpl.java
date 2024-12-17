@@ -32,6 +32,10 @@ public class UserServiceImpl implements UserService  {
         return null;
     }
 
+    @Override
+    public void removeObserver(FollowerObserver follower) {
+        followersList.remove(follower);
+    }
 
 
     @Override
@@ -53,3 +57,4 @@ public class UserServiceImpl implements UserService  {
 //
 //    }
 //
+

@@ -14,5 +14,6 @@ public interface UserService {
     void notifyObservers(String message);
 
     void addObserver(FollowerObserver newfollower);
+    void removeObserver(FollowerObserver newfollower);
 }
 
