@@ -46,5 +46,19 @@ public class NotificationHandler extends BaseHandler {
             setResponse(exchange,json.toString());
 
         }
+        else  if (path.matches("/api/notifications/clear")) {
+            String requestBody = new BufferedReader(new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8))
+                    .lines()
+                    .collect(Collectors.joining("\n"));
+
+            Map<String, Object> parsedValues = parseInput(requestBody);
+            System.out.println(parsedValues);
+            int user_id = ((Double) parsedValues.get("user_id")).intValue();
+;
+            notificationService.markNotificationsAsRead(user_id);
+
+            setResponse(exchange,"True");
+
+        }
     }
 }

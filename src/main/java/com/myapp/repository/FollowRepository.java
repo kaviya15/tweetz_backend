@@ -79,10 +79,6 @@ public class FollowRepository {
 
 
 
-    public String update(String message) {
-        /* update to the database for each followers*/
-        return null;
-    }
 
 
 

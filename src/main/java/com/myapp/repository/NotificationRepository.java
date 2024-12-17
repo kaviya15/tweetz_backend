@@ -3,6 +3,7 @@ package com.myapp.repository;
 
 
 import com.myapp.model.Notifications;
+import com.myapp.model.User;
 import com.myapp.util.DBConnection;
         import java.sql.Connection;
         import java.sql.PreparedStatement;
@@ -51,4 +52,23 @@ public class NotificationRepository  {
         }
     }
 
+
+    public static  String findUserById(int userid) {
+
+        System.out.println("find all call method invoked");
+        String query = "SELECT name FROM users WHERE id = ?";
+        String output = null;
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1,userid);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+               output =  rs.getString("name");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+        return output;
+    }
 }

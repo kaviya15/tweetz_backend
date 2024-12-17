@@ -40,10 +40,7 @@ public class FollowerServiceImpl implements FollowService {
 
     }
 
-//    @Override
-//    public String update(String message) {
-//        return null;
-//    }
-
 
 }
+
+
