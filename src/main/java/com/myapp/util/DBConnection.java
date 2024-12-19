@@ -13,10 +13,9 @@ public class DBConnection {
     static {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://localhost:5432/xapplication");
-        config.setUsername("postgres");
-        config.setPassword("Kaviya@123");
+        config.setUsername("");
+        config.setPassword("");
 
-        // Connection pool configuration
         config.setMaximumPoolSize(10); // Maximum number of connections
         config.setMinimumIdle(2);     // Minimum number of idle connections
         config.setIdleTimeout(30000); // Idle timeout in milliseconds
